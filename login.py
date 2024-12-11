@@ -1,5 +1,12 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="Waste Monitoring",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 def login_page():
     st.title("Login")
     username = st.text_input("Username")
@@ -10,7 +17,7 @@ def login_page():
         # Simple hardcoded credentials for demo
         if username == "dylanharper" and password == "password123":
             st.session_state["logged_in"] = True
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("Invalid credentials. Please try again.")
 

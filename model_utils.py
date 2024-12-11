@@ -1,9 +1,6 @@
 from ultralytics import YOLO
 import streamlit as st
-import cv2
-import pafy
-import pickle
-import settings
+
 
 def load_model(model_path):
     """

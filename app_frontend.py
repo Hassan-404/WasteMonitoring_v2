@@ -1,21 +1,14 @@
-# Python In-built packages
 from pathlib import Path
 import PIL
-import numpy as np
-import cv2
 
-# External packages
 import streamlit as st
 
-# Local Modules
 import settings
 import model_utils
 from login import ensure_login
 
-# Ensure user is logged in
 ensure_login()
 
-# Setting page layout
 st.set_page_config(
     page_title="Waste Monitoring",
     page_icon="🤖",
@@ -23,10 +16,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Main page heading
 st.title("Waste Monitoring System")
 
-# About Section
+
 about_text = """
 The world generates at least 3.5 million tons of waste per day, and this number is still increasing day by day.
 That's why we need to be aware of waste.
@@ -45,7 +37,6 @@ source_img = None
 model_type = 'Detection' 
 confidence = 0.25 
 
-# Load the Detection model
 model_path = Path(settings.DETECTION_MODEL)
 try:
     model = model_utils.load_model(model_path)
@@ -53,7 +44,6 @@ except Exception as ex:
     st.error(f"Unable to load model. Check the specified path: {model_path}")
     st.error(ex)
 
-# If image is selected
 if source_radio == settings.IMAGE:
     source_img = st.sidebar.file_uploader(
         "Choose an image...", type=("jpg", "jpeg", "png", 'bmp', 'webp'))
@@ -64,7 +54,7 @@ if source_radio == settings.IMAGE:
         if source_img:
             try:
                 uploaded_image = PIL.Image.open(source_img)
-                st.image(source_img, caption="Uploaded Image", use_column_width=True)
+                st.image(source_img, caption="Uploaded Image", use_container_width=True)
             except Exception as ex:
                 st.error("Error occurred while opening the image.")
                 st.error(ex)
@@ -77,7 +67,7 @@ if source_radio == settings.IMAGE:
                 try:
                     res = model.predict(uploaded_image, conf=confidence)
                     res_plotted = res[0].plot()[:, :, ::-1]
-                    st.image(res_plotted, caption='Detected Image', use_column_width=True)
+                    st.image(res_plotted, caption='Detected Image', use_container_width=True)
                 except Exception as ex:
                     st.error("Error occurred during detection.")
                     st.error(ex)
@@ -86,7 +76,7 @@ if source_radio == settings.IMAGE:
 
 elif source_radio == settings.WEBCAM:
     captured_image = st.camera_input("Capture an image", key="capture")
-    show_capture = True  # Toggle visibility of the capture interface
+    show_capture = True  
 
     col1, col2 = st.columns(2)
 
@@ -94,10 +84,7 @@ elif source_radio == settings.WEBCAM:
         if captured_image is not None:
             try:
                 img = PIL.Image.open(captured_image).convert("RGB")
-                st.image(img, caption="Captured Image", use_column_width=True)
-            except Exception as ex:
-                st.error("Error occurred while processing the captured image.")
-                st.error(ex)
+                st.image(img, caption="Captured Image", use_container_width=True)
             except Exception as ex:
                 st.error("Error occurred while processing the captured image.")
                 st.error(ex)
@@ -110,7 +97,7 @@ elif source_radio == settings.WEBCAM:
                 if st.sidebar.button("Classify Captured Image", key="classify_captured_image"):
                     res = model.predict(img, conf=confidence)
                     res_plotted = res[0].plot()[:, :, ::-1]
-                    st.image(res_plotted, caption='Detected Image', use_column_width=True)
+                    st.image(res_plotted, caption='Detected Image', use_container_width=True)
             except Exception as ex:
                 st.error("Error occurred during detection.")
                 st.error(ex)
