@@ -14,7 +14,7 @@ IMAGE = 'Image'
 WEBCAM = 'Webcam'
 SOURCES_LIST = [IMAGE, WEBCAM]
 
-MODEL_DIR =  'weights/'
+MODEL_DIR =  './weights/'
 DETECTION_MODEL = MODEL_DIR+'yolov8.pt'
 
 # Webcam
