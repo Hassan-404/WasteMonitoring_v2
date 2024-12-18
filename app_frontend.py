@@ -1,3 +1,10 @@
+import os
+
+# Check for libGL
+os.system("ldconfig -p | grep libGL")
+
+# Check installed apt packages (optional)
+os.system("apt list --installed")
 from pathlib import Path
 import PIL
 
